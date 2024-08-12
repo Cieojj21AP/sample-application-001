@@ -20,6 +20,8 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    # 認証URL設定
+    path('account/', include('allauth.urls')),
     # アカウントアプリ
     path('', include('accounts.urls'))
 ]
