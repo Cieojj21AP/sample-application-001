@@ -172,3 +172,41 @@ ACCOUNT_LOGOUT_REDIRECT_URL = '/account/login/' #　ログアウト後のリダ�
 
 # メール認証を外す（ローカルサーバのため）
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# ログ仕様
+# ここの仕様をもとにログ出力される
+logFilePath= str(BASE_DIR) + '/Application.log'
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    # ログ出力フォーマットの設定
+    'formatters': {
+        'production': {
+            'format': '%(asctime)s[%(levelname)s][%(module)s]%(pathname)s:%(lineno)d %(message)s'
+        },
+    },
+    # ハンドラの設定
+    'handlers': {
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': logFilePath,
+            'formatter': 'production',
+        },
+    },
+    # ロガーの設定
+    'loggers': {
+        # 自分で追加したアプリケーション全般のログを拾うロガー
+        'general': {
+            'handlers': ['file'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        # Django自身が出力するログ全般を拾うロガー
+        'django': {
+            'handlers': ['file'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+    },
+}
