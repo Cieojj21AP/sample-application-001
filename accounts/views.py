@@ -14,3 +14,10 @@ def index(request):
 def index_redirect(request):
     response = redirect('/home/')
     return response
+
+#
+# アカウント詳細確認・変更画面
+#
+def account_detail(request):
+    response = redirect('/home/')
+    return response

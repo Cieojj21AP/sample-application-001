@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import UserManager, AbstractUser
+import uuid
 
 class CustomUserManager(UserManager):
     use_in_migrations = True
@@ -44,6 +45,8 @@ class CustomUserManager(UserManager):
     
 class CustomUser(AbstractUser):
     objects = CustomUserManager()
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    zipcode = models.IntegerField('ZipCode', null=False, default='1000000')
  
     def __str__(self):
         return self.email
