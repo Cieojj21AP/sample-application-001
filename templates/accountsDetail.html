@@ -9,7 +9,7 @@
     <!-- ユーザー登録フォームを表示 -->
     {% csrf_token %}
     {{ accountsForm }}
-    <button type='submit' name='accounts_confirm'>
+    <button type='submit' name='accounts_confirm' onclick="return confirm('Do you change your information?')">
         Save Changes
     </button>
 </form>

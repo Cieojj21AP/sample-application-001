@@ -68,3 +68,9 @@ def account_detail(request):
     
     # アカウント詳細確認・変更画面に遷移
     return render(request, 'accountsDetail.html', {'accountsForm': form})
+
+#
+# What画面表示
+#
+def what(request):
+    return render(request, 'what.html')
