@@ -22,6 +22,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # 認証URL設定
     path('account/', include('allauth.urls')),
-    # アカウントアプリ
-    path('', include('accounts.urls'))
+    # アカウントAPI
+    path('', include('accounts.urls')),
+    # ファイル変換API
+    path('', include('fileconvert.urls')),
 ]

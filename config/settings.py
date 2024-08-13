@@ -47,6 +47,9 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+
+    # ファイル変換API
+    'fileconvert.apps.FileconvertConfig'
 ]
 
 MIDDLEWARE = [
