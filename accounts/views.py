@@ -30,10 +30,14 @@ def index_redirect(request):
 #
 def account_detail(request):
 
+    # ログインしていない場合、ログイン画面に遷移する
+    if not request.user.id:
+        return redirect('/account/login')
+        
     # ボタンが押下されたら実行
     if "accounts_confirm" in request.POST:
         # ログ出力
-        logger.info("アカウント情報変更を変更します")
+        logger.info("アカウント情報を変更します")
 
         try:
             _instance = get_object_or_404(User, pk=request.user.id)
