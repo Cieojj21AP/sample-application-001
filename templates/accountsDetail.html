@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+
+{% block mainblock %}
+
+<h1>Change Your Information</h1>
+
+<form method='post'>
+    <!-- ユーザー登録フォームを表示 -->
+    {% csrf_token %}
+    {{ accountsForm }}
+    <button type='submit' name='accounts_confirm'>
+        Save Changes
+    </button>
+</form>
+
+{% endblock %}
