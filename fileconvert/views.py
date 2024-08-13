@@ -7,7 +7,10 @@ import logging
 logger = logging.getLogger('general')
 
 #
-# Home画面表示
+# Convert画面表示
 #
 def index(request):
-    return render(request, 'home.html')
+    # ログ出力
+    logger.info("Convert画面を表示します")
+    
+    return render(request, 'convert.html')

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+
+{% block mainblock %}
+
+<h1>Drop your file!</h1>
+
+<div class="bg-white p-5 rounded shadow-sm border">
+    <div class="dropzone d-block">
+        <label for="files" class="dropzone-container">
+            <div class="text-center pt-3 px-5">
+                <p class="w-80 h5 text-dark fw-bold">
+                    Drag your documents. Only Allowed JPEG and PNG.
+                </p>
+                <div class="hr-sect">or</div>
+                <button class="btn btn-primary mb-2">
+                    Browse Files
+                </button>
+            </div>
+        </label>
+        <input id="files" name="files[]" type="file" class="file-input"/>
+    </div>
+</div>
+
+{% endblock %}
