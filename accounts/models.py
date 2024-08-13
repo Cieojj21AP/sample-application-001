@@ -49,7 +49,7 @@ class CustomUser(AbstractUser):
     # カスタムユーザーのフィールド
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     zipcode = models.IntegerField('郵便番号', null=False, default='1000000')
-    address1 = models.CharField('住所1', null=False, default='Tokyo', max_length=50)
+    address1 = models.CharField('住所1', null=False, default='YourCity', max_length=50)
     address2 = models.CharField('住所2', null=True, max_length=50)
  
     def __str__(self):

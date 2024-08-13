@@ -2,7 +2,10 @@ from django.shortcuts import render
 from django.views import View
 from django.shortcuts import redirect
 from django.shortcuts import render, get_object_or_404
+
+from accounts.models import CustomUser as User
 from accounts.forms import AccountsUpdateForm
+
 import logging
 
 
@@ -30,7 +33,7 @@ def account_detail(request):
     # ボタンが押下されたら実行
     if "accounts_confirm" in request.POST:
         # ログ出力
-        logger.info("アカウント情報変更を登録します")
+        logger.info("アカウント情報変更を変更します")
 
         try:
             _instance = get_object_or_404(User, pk=request.user.id)
@@ -44,25 +47,23 @@ def account_detail(request):
             # ログ出力
             logger.exception("アカウント情報変更に失敗しました")
 
-        # ユーザIDをもとにDBに照会
-        # user = get_object_or_404(User, pk=request.user.id)
-        # context = {
-        #     'user': user,
-        # }
-
-    # URL接続時
     # ログ出力
     logger.info("アカウント情報変更画面を表示します")
+    # ユーザー情報取得
+    userObject = get_object_or_404(User, pk=request.user.id)
+
     # 初期値設定
     initialContext={
-        'username':request.user.username,
-        'email':request.user.email,
-        'last_name':request.user.last_name,
-        'first_name':request.user.first_name,
-        'zipcode':request.user.zipcode,
-        'address1':request.user.address1,
-        'address2':request.user.address2,
+        'username':userObject.username,
+        'email':userObject.email,
+        'last_name':userObject.last_name,
+        'first_name':userObject.first_name,
+        'zipcode':userObject.zipcode,
+        'address1':userObject.address1,
+        'address2':userObject.address2,
     }
+
+    # フォームに入力する
     form = AccountsUpdateForm(initialContext)
     
     # アカウント詳細確認・変更画面に遷移
