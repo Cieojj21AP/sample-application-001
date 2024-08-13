@@ -1,26 +1,21 @@
 <!DOCTYPE html>
 {% extends "base.html" %}
-{% load static %}
 
 {% block mainblock %}
 
 <h1>Drop your file!</h1>
 
 
-<div class="container page-header">
-    <div class="col-sm-4">
-        <form action="" method="post" enctype="multipart/form-data">
-            <div class="imagePreview"></div>
-            <div class="input-group">
-                <label class="input-group-btn">
-                    <span class="btn btn-primary">
-                        Choose File<input type="file" style="display:none" class="uploadFile">
-                    </span>
-                </label>
-                <input type="text" class="form-control" readonly="" multiple="multiple" accept="image/png, image/jpeg, image/jpg">
-            </div>
-        </form>
-    </div>
+<div class="form-group">
+	<div id="file" class="input-group">
+		<div class="custom-file">
+            <input type="file" id="cutomfile" class="custom-file-input form-control" name="cutomfile[]" multiple/>
+            <!-- <label class="btn btn-primary" for="cutomfile">Ref</label> -->
+		</div>
+		<div class="input-group-append">
+			<button type="button" class="btn btn-outline-secondary reset">Cancel</button>
+		</div>
+	</div>
 </div>
 
 {% endblock %}
