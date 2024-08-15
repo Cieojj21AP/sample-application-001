@@ -26,7 +26,7 @@ def index(request):
         resultTextract = textract_transceiver(fileObj.temporary_file_path())
 
         # エラーが返却された場合は戻る
-        if resultTextract == textractError
+        if resultTextract == textractError:
             return render(request, 'convert.html')
 
         # ログ出力
