@@ -18,7 +18,7 @@ def index(request):
         logger.info("Convertを開始します")
 
         # ファイルをフォームから入手
-        fileObj = request.FILES['file']
+        fileObj = request.FILES['cutomfile[]']
 
         # Textract送受信開始
         resultTextract = textract_transceiver(fileObj)
@@ -50,7 +50,7 @@ def textract_transceiver(uploadFiles):
                 'Bytes': data
             }
         )
-        
+
     except Exception as e:
         logger.exception()
 
