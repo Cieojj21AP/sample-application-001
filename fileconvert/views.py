@@ -18,7 +18,7 @@ def index(request):
         logger.info("Convertを開始します")
 
         # ファイルをフォームから入手
-        fileObj = request.POST['cutomfile[]']
+        fileObj = request.FILES['cutomfile[]']
 
         # Textract送受信開始
         resultTextract = textract_transceiver(fileObj)
