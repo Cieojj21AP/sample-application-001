@@ -21,7 +21,7 @@ def index(request):
         fileObj = request.FILES['cutomfile[]']
 
         # Textract送受信開始
-        resultTextract = textract_transceiver(fileObj)
+        resultTextract = textract_transceiver(fileObj.temporary_file_path())
 
         # ログ出力
         logger.info(resultTextract)
@@ -41,9 +41,9 @@ def textract_transceiver(uploadFiles):
     try:
         # 画像ファイルを開く
         # With文が終わるとファイルを閉じてメモリを解放する
-        # with open(uploadFiles, 'rb') as file:
-        #     data = file.read()
-        data = Image.open(uploadFiles)
+        with open(uploadFiles, 'rb') as file:
+            data = file.read()
+        # data = Image.open(uploadFiles)
 
         # Amazon Textractを呼び出し、レスポンスをキャッチ
         response = textractClient.detect_document_text(

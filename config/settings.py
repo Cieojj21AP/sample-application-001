@@ -217,3 +217,8 @@ LOGGING = {
         },
     },
 }
+
+# ファイルのアップロード形式をTemporaryFileUploadに変更
+FILE_UPLOAD_HANDLERS = [
+    'django.core.files.uploadhandler.TemporaryFileUploadHandler', 
+    ]
