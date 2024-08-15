@@ -55,7 +55,7 @@ def textract_transceiver(uploadFiles):
         # レスポンスから文字列のみを抜き取る
         for item in response["Blocks"]:
             if item["BlockType"] == "LINE":
-                responseStr = item["Text"] + '\n'
+                responseStr += item["Text"] + '\n'
 
     except Exception as e:
         logger.exception("Textractとの通信に失敗しました")
