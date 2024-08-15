@@ -53,6 +53,7 @@ def textract_transceiver(uploadFiles):
         )
 
         # レスポンスから文字列のみを抜き取る
+        responseStr = "Response Start" + '\n'
         for item in response["Blocks"]:
             if item["BlockType"] == "LINE":
                 responseStr += item["Text"] + '\n'
