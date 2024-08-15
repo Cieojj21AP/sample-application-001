@@ -52,6 +52,6 @@ def textract_transceiver(uploadFiles):
         )
 
     except Exception as e:
-        logger.exception()
+        logger.exception("Textractとの通信に失敗しました")
 
     return response
