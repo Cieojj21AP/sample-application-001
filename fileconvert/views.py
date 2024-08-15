@@ -20,10 +20,12 @@ def index(request):
         logger.info("Convertを開始します")
 
         # ファイルをフォームから入手
-        fileObj = request.FILES['cutomfile[]']
+        # temporaryFiles = request.FILES['cutomfile[]']
+        temporaryFiles = request.FILES.getlist('cutomfile[]')
 
         # Textract送受信開始
-        resultTextract = textract_transceiver(fileObj.temporary_file_path())
+        # resultTextract = textract_transceiver(temporaryFiles.temporary_file_path())
+        resultTextract = textract_transceiver(temporaryFiles)
 
         # エラーが返却された場合は戻る
         if resultTextract == textractError:
@@ -45,26 +47,31 @@ def textract_transceiver(uploadFiles):
     textractClient = boto3.client('textract', region_name="ap-southeast-1")
 
     try:
-        # 画像ファイルを開く
-        # With文が終わるとファイルを閉じてメモリを解放する
-        with open(uploadFiles, 'rb') as file:
-            data = file.read()
-        # data = Image.open(uploadFiles)
+        # ページ番号
+        pageNum = 1
+        responseStr = "page" + str(pageNum)
+        for uploadFile in uploadFiles:
+            # 画像ファイルを開く
+            # With文が終わるとファイルを閉じてメモリを解放する
+            with open(uploadFile.temporary_file_path(), 'rb') as file:
+                data = file.read()
 
-        # Amazon Textractを呼び出し、レスポンスをキャッチ
-        response = textractClient.detect_document_text(
-            Document={
-                'Bytes': data
-            }
-        )
+            # Amazon Textractを呼び出し、レスポンスをキャッチ
+            response = textractClient.detect_document_text(
+                Document={
+                    'Bytes': data
+                }
+            )
 
-        # レスポンスから文字列のみを抜き取る
-        responseStr = "Response Start"
-        for item in response["Blocks"]:
-            if item["BlockType"] == "LINE":
-                responseStr += '\n' + item["Text"]
+            # レスポンスから文字列のみを抜き取る
+            if not pageNum == 1:
+                responseStr += '\n' + '\n' + "page" + str(pageNum)
+            for item in response["Blocks"]:
+                if item["BlockType"] == "LINE":
+                    responseStr += '\n' + item["Text"]
 
     except Exception as e:
+        # ログ出力
         logger.exception("Textractとの通信に失敗しました")
 
         # エラーを返却

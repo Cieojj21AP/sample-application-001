@@ -5,13 +5,12 @@
 
 <h1>Drop your file!</h1>
 
-<form method='post' enctype="multipart/form-data">
+<form class="" method='post' enctype="multipart/form-data">
 	{% csrf_token %}
 	<div class="form-group">
 		<div id="file" class="input-group">
 			<div class="custom-file">
-				<input type="file" id="cutomfile" class="custom-file-input form-control" name="cutomfile[]" multiple/>
-				<!-- <label class="btn btn-primary" for="cutomfile">Ref</label> -->
+				<input type="file" id="cutomfile" class="custom-file-input form-control" name="cutomfile[]" multiple required/>
 			</div>
 			<div class="input-group-append">
 				<button type="button" class="btn btn-outline-secondary reset">Cancel</button>
