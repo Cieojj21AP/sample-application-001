@@ -6,6 +6,8 @@ import boto3
 
 # ログの名前空間取得
 logger = logging.getLogger('general')
+# Textract Error
+textractError = "server error"
 
 #
 # Convert画面表示
@@ -22,6 +24,10 @@ def index(request):
 
         # Textract送受信開始
         resultTextract = textract_transceiver(fileObj.temporary_file_path())
+
+        # エラーが返却された場合は戻る
+        if resultTextract == textractError
+            return render(request, 'convert.html')
 
         # ログ出力
         logger.info(resultTextract)
@@ -53,12 +59,15 @@ def textract_transceiver(uploadFiles):
         )
 
         # レスポンスから文字列のみを抜き取る
-        responseStr = "Response Start" + '\n'
+        responseStr = "Response Start"
         for item in response["Blocks"]:
             if item["BlockType"] == "LINE":
-                responseStr += item["Text"] + '\n'
+                responseStr += '\n' + item["Text"]
 
     except Exception as e:
         logger.exception("Textractとの通信に失敗しました")
+
+        # エラーを返却
+        responseStr = textractError
 
     return responseStr
