@@ -5,21 +5,22 @@
 
 <h1>Drop your file!</h1>
 
-
-<div class="form-group">
-	<div id="file" class="input-group">
-		<div class="custom-file">
-            <input type="file" id="cutomfile" class="custom-file-input form-control" name="cutomfile[]" multiple/>
-            <!-- <label class="btn btn-primary" for="cutomfile">Ref</label> -->
-		</div>
-		<div class="input-group-append">
-			<button type="button" class="btn btn-outline-secondary reset">Cancel</button>
+<form method='post'>
+	<div class="form-group">
+		<div id="file" class="input-group">
+			<div class="custom-file">
+				<input type="file" id="cutomfile" class="custom-file-input form-control" name="cutomfile[]" multiple/>
+				<!-- <label class="btn btn-primary" for="cutomfile">Ref</label> -->
+			</div>
+			<div class="input-group-append">
+				<button type="button" class="btn btn-outline-secondary reset">Cancel</button>
+			</div>
 		</div>
 	</div>
-</div>
 
-<button type='submit' name='convert_progress' onclick="return confirm('Do you convert this document?')">
-	Convert Text
-</button>
+	<button type='submit' name='convert_progress' onclick="return confirm('Do you convert this document?')">
+		Convert Text
+	</button>
+</form>
 
 {% endblock %}
