@@ -38,16 +38,20 @@ def textract_transceiver(uploadFiles):
     # Amazon Textract client
     textractClient = boto3.client('textract', region_name="ap-southeast-1")
 
-    # 画像ファイルを開く
-    # With文が終わるとファイルを閉じてメモリを解放する
-    with open(uploadFiles, 'rb') as file:
-        data = file.read()
+    try:
+        # 画像ファイルを開く
+        # With文が終わるとファイルを閉じてメモリを解放する
+        with open(uploadFiles, 'rb') as file:
+            data = file.read()
 
-    # Amazon Textractを呼び出し、レスポンスをキャッチ
-    response = textractClient.detect_document_text(
-        Document={
-            'Bytes': data
-        }
-    )
+        # Amazon Textractを呼び出し、レスポンスをキャッチ
+        response = textractClient.detect_document_text(
+            Document={
+                'Bytes': data
+            }
+        )
+        
+    except Exception as e:
+        logger.exception()
 
     return response

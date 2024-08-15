@@ -198,6 +198,7 @@ LOGGING = {
             'class': 'logging.FileHandler',
             'filename': logFilePath,
             'formatter': 'production',
+            'encoding':'utf8',
         },
     },
     # ロガーの設定
