@@ -106,7 +106,7 @@ def translate_transceiver(srcText):
 
     try:
         # Amazon Translateを呼び出し、レスポンスをキャッチ
-        response = translateClient.detect_document_text(
+        response = translateClient.translate_text(
             Text=srcText,
             SourceLanguageCode = srcLang,
             TargetLanguageCode = trgLang,
