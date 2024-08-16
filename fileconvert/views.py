@@ -119,15 +119,15 @@ def translate_transceiver(srcText):
         for page in range(srcPageNum):
             # Amazon Translateを呼び出し、レスポンスをキャッチ
             response = translateClient.translate_text(
-                Text=srcText,
+                Text=srcText[page],
                 SourceLanguageCode = srcLang,
                 TargetLanguageCode = trgLang,
             )
 
             # レスポンスから翻訳文を抜き出す
-            responseStr.append(str(page))
+            responseStr.append(str(page + 1))
             for item in response['TranslatedText']:
-                responseStr[page-1] = item
+                responseStr[page] = item
 
 
     except Exception as e:
