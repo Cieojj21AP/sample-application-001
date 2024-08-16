@@ -80,7 +80,8 @@ def textract_transceiver(uploadFiles):
             # レスポンスから文字列のみを抜き取る
             # if not pageNum == 1:
             #     responseStr[pageNum-1] += '\n' + '\n' + "page" + str(pageNum)
-            responseStr[pageNum-1] = "page" + str(pageNum)
+            # responseStr[pageNum-1] = "page" + str(pageNum)
+            responseStr.append("page" + str(pageNum))
             for item in response["Blocks"]:
                 if item["BlockType"] == "LINE":
                     responseStr[pageNum-1] += '\n' + item["Text"]
@@ -123,6 +124,7 @@ def translate_transceiver(srcText):
             )
 
             # レスポンスから翻訳文を抜き出す
+            responseStr.append(str(page))
             for item in response['TranslatedText']:
                 responseStr[page-1] = item
 
