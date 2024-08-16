@@ -61,6 +61,8 @@ def textract_transceiver(uploadFiles):
     try:
         # ページ番号
         pageNum = 1
+        # 初期化
+        responseStr = []
         # responseStr[pageNum-1] = "page" + str(pageNum)
         for uploadFile in uploadFiles:
             # 画像ファイルを開く
@@ -109,6 +111,8 @@ def translate_transceiver(srcText):
     try:
         # ページ数を取得
         srcPageNum = srcText.len()
+        # 初期化
+        responseStr = []
 
         for page in srcPageNum:
             # Amazon Translateを呼び出し、レスポンスをキャッチ
