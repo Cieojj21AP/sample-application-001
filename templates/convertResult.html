@@ -5,10 +5,15 @@
 
 {% for resultParam in resultList %}
 <div>
-    <textarea id="resultParam" rows="5">
-        {{ resultParam }}
-    </textarea>
+    <details>
+        <summary>
+            Page {{ forloop.counter }}
+        </summary>
+        <textarea id="resultParam" rows="3" cols="40">
+            {{ resultParam }}
+        </textarea>
+    </details>
 </div>
-{% end %}
+{% endfor %}
 
 {% endblock %}
