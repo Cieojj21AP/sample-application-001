@@ -126,8 +126,9 @@ def translate_transceiver(srcText):
 
             # レスポンスから翻訳文を抜き出す
             responseStr.append(str(page + 1))
-            for item in response['TranslatedText']:
-                responseStr[page] = item
+            # for item in response['TranslatedText']:
+            #     responseStr[page] = item
+            responseStr[page] = response['TranslatedText'].replace('\n','')
 
 
     except Exception as e:
