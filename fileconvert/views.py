@@ -8,6 +8,8 @@ import boto3
 logger = logging.getLogger('general')
 # Textract Error
 textractError = "server error"
+# Translate Error
+translateError = "server error"
 
 #
 # Convert画面表示
@@ -30,9 +32,19 @@ def index(request):
         # エラーが返却された場合は戻る
         if resultTextract == textractError:
             return render(request, 'convert.html')
+        
+        # Translate送受信開始
+        resultTranslate = translate_transceiver(resultTextract)
 
+        # エラーが返却された場合は戻る
+        if resultTranslate == translateError:
+            return render(request, 'convert.html')
+        
         # ログ出力
-        logger.info(resultTextract)
+        # logger.info(resultTextract)
+        
+        # ログ出力
+        logger.info(resultTranslate)
 
     # ログ出力
     logger.info("Convert画面を表示します")
@@ -70,11 +82,41 @@ def textract_transceiver(uploadFiles):
                 if item["BlockType"] == "LINE":
                     responseStr += '\n' + item["Text"]
 
+            # ページ番号に1を足す
+            pageNum += 1
+
     except Exception as e:
         # ログ出力
         logger.exception("Textractとの通信に失敗しました")
 
         # エラーを返却
         responseStr = textractError
+
+    return responseStr
+
+
+#
+# Translate送受信用関数
+#
+def translate_transceiver(srcText):
+    # Amazon Translate client
+    translateClient = boto3.client('translate', region_name="ap-southeast-1")
+    srcLang = 'auto'
+    trgLang = 'ja'
+
+    try:
+        # Amazon Translateを呼び出し、レスポンスをキャッチ
+        response = translateClient.detect_document_text(
+            Text=srcText,
+            SourceLanguageCode = srcLang,
+            TargetLanguageCode = trgLang,
+        )
+
+    except Exception as e:
+        # ログ出力
+        logger.exception("Translateとの通信に失敗しました")
+
+        # エラーを返却
+        responseStr = translateError
 
     return responseStr
