@@ -46,6 +46,14 @@ def index(request):
         # ログ出力
         logger.info(resultTranslate)
 
+        # 結果をコンテクストに詰める
+        context = {
+            'resultList':   resultTranslate,
+        }
+
+        # 結果を返却
+        return render(request, 'convertResult.html', context)
+
     # ログ出力
     logger.info("Convert画面を表示します")
     

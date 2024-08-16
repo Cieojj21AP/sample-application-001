@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+
+{% block mainblock %}
+
+{% for resultParam in resultList %}
+<div>
+    <textarea id="resultParam" rows="5">
+        {{ resultParam }}
+    </textarea>
+</div>
+{% end %}
+
+{% endblock %}
