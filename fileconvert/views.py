@@ -61,7 +61,7 @@ def textract_transceiver(uploadFiles):
     try:
         # ページ番号
         pageNum = 1
-        responseStr = "page" + str(pageNum)
+        # responseStr[pageNum-1] = "page" + str(pageNum)
         for uploadFile in uploadFiles:
             # 画像ファイルを開く
             # With文が終わるとファイルを閉じてメモリを解放する
@@ -76,11 +76,12 @@ def textract_transceiver(uploadFiles):
             )
 
             # レスポンスから文字列のみを抜き取る
-            if not pageNum == 1:
-                responseStr += '\n' + '\n' + "page" + str(pageNum)
+            # if not pageNum == 1:
+            #     responseStr[pageNum-1] += '\n' + '\n' + "page" + str(pageNum)
+            responseStr[pageNum-1] = "page" + str(pageNum)
             for item in response["Blocks"]:
                 if item["BlockType"] == "LINE":
-                    responseStr += '\n' + item["Text"]
+                    responseStr[pageNum-1] += '\n' + item["Text"]
 
             # ページ番号に1を足す
             pageNum += 1
@@ -104,13 +105,25 @@ def translate_transceiver(srcText):
     srcLang = 'auto'
     trgLang = 'ja'
 
+
     try:
-        # Amazon Translateを呼び出し、レスポンスをキャッチ
-        responseStr = translateClient.translate_text(
-            Text=srcText,
-            SourceLanguageCode = srcLang,
-            TargetLanguageCode = trgLang,
-        )
+        # ページ数を取得
+        srcPageNum = srcText.len()
+
+        for page in srcPageNum:
+            # Amazon Translateを呼び出し、レスポンスをキャッチ
+            response = translateClient.translate_text(
+                Text=srcText,
+                SourceLanguageCode = srcLang,
+                TargetLanguageCode = trgLang,
+            )
+
+            # レスポンスから翻訳文を抜き出す
+            for item in response['TranslatedText']:
+                responseStr[page-1] = item
+
+            # ページに１を足す
+            page += 1
 
     except Exception as e:
         # ログ出力
