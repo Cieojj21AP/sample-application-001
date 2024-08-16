@@ -111,7 +111,7 @@ def translate_transceiver(srcText):
 
     try:
         # ページ数を取得
-        srcPageNum = srcText.len()
+        srcPageNum = len(srcText)
         # 初期化
         responseStr = []
 
