@@ -115,7 +115,8 @@ def translate_transceiver(srcText):
         # 初期化
         responseStr = []
 
-        for page in srcPageNum:
+        # for page in srcPageNum:
+        for page in range(srcPageNum):
             # Amazon Translateを呼び出し、レスポンスをキャッチ
             response = translateClient.translate_text(
                 Text=srcText,
@@ -128,8 +129,6 @@ def translate_transceiver(srcText):
             for item in response['TranslatedText']:
                 responseStr[page-1] = item
 
-            # ページに１を足す
-            page += 1
 
     except Exception as e:
         # ログ出力
