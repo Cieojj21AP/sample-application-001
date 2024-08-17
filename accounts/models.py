@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import UserManager, AbstractUser
 import uuid
+from django.utils import timezone
 
 class CustomUserManager(UserManager):
     use_in_migrations = True
@@ -51,6 +52,15 @@ class CustomUser(AbstractUser):
     zipcode = models.IntegerField('郵便番号', null=False, default='1000000')
     address1 = models.CharField('住所1', null=False, default='YourCity', max_length=50)
     address2 = models.CharField('住所2', null=True, max_length=50)
+    joinedDate = models.DateTimeField('入会日',default=timezone.now)
  
     def __str__(self):
         return self.email
+    
+class SubscriptionCustomer(models.Model):
+    user = models.OneToOneField(to=CustomUser, on_delete=models.CASCADE)
+    stripeCustomerId = models.CharField(max_length=255)
+    stripeSubscriptionId = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.user.username
