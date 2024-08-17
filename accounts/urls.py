@@ -12,4 +12,14 @@ urlpatterns = [
     # what画面
     path('what', views.what, name='what'),
 
+    # Stripe支払い画面
+    path('billing/', views.billing_index, name='stripe_config'),
+    # Stripe設定画面
+    path('billing/config/', views.stripe_config, name='stripe_config'),
+    # 支払い遷移画面
+    path('billing/create-checkout-session/', views.create_checkout_session, name='create_checkout_session'),
+    # 支払い成功画面
+    path('billing/success/', views.success, name='success'),
+    # 支払い失敗画面
+    path('billing/cancel/', views.cancel, name='cancel'),
 ]
