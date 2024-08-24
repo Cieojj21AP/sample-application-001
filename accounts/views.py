@@ -157,6 +157,9 @@ def create_checkout_session(request):
                     }
                 ]
             )
+
+            # ログ出力
+            logger.info("{id: " + checkout_session['id'] + ", client_reference_id: " + checkout_session['client_reference_id'] + "}")
             return JsonResponse({'sessionId': checkout_session['id']})
         except Exception as e:
             return JsonResponse({'error': str(e)})
@@ -168,8 +171,7 @@ def success(request):
     # 支払い成功以外の場合はリダイレクト
     if not request.GET.get('session_id'):
         return redirect('/home/')
-    
-    print(request.GET.get('session_id'))
+
     return render(request, 'billing/success.html')
 
 #
@@ -177,3 +179,60 @@ def success(request):
 #
 def cancel(request):
     return render(request, 'billing/cancel.html')
+
+
+#
+# Webhookからの情報を常に受ける
+#
+@csrf_exempt
+def webhook_receiver(request):
+    endpoint_secret = settings.STRIPE_WEBHOOK_SECRET
+    payload = request.body.decode('utf-8')
+    sig_header = request.META['HTTP_STRIPE_SIGNATURE']
+    event = None
+    
+    try:
+        event = stripe.Webhook.construct_event(
+            payload, sig_header, endpoint_secret
+        )
+    except ValueError as e:
+        # Invalid payload
+        return HttpResponse(status=400)
+    except stripe.error.SignatureVerificationError as e:
+        # Invalid signature
+        return HttpResponse(status=400)
+
+    event_type = event['type']
+    # Handle the checkout.session.completed event
+    if event_type == 'checkout.session.completed':
+        ### チェックアウト成功＝サブスクスタート時のアクションを書きましょう。
+        session = event['data']['object']
+        webhook_client_reference_id    = session.get('client_reference_id')  #リファレンスID(3.1.でStripeに飛ばしたclient_reference_id)
+        webhook_stripe_customer_id     = session.get('customer')             #カスタマーID
+        webhook_stripe_subscription_id = session.get('subscription')         #サブスクリプションID
+
+        #自サービスのデータにStripe決済データを登録する等Updateしましょう。
+        print('Payment succeeded!')
+        print(webhook_client_reference_id)
+        print(webhook_stripe_customer_id)
+        print(webhook_stripe_subscription_id)
+
+    elif event_type == 'customer.subscription.trial_will_end':
+        #トライアル期間が終了する時のアクションを書きましょう
+        print('Subscription trial will end')
+
+    elif event_type == 'customer.subscription.created':
+        # 省略
+        print('Subscription created %s', event.id)
+
+    elif event_type == 'customer.subscription.updated':
+        # 省略
+        print('Subscription created %s', event.id)
+
+    elif event_type == 'customer.subscription.deleted':
+        # 省略
+        # handle subscription canceled automatically based
+        # upon your subscription settings. Or if the user cancels it.
+        print('Subscription canceled: %s', event.id)
+
+    return HttpResponse(status=200)

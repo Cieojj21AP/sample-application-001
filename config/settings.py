@@ -240,3 +240,6 @@ STRIPE_PRICE_ID_YEARLY_LIMITED = env.get_value('STRIPE_PRICE_ID_YEARLY_LIMITED',
 # STRIPEサブスクリプション識別子
 SUBSCRIPTION_MONTHLY_LIMITED = 'monthly_limited'
 SUBSCRIPTION_YEARLY_LIMITED = 'yearly_limited'
+
+# Webhookエンドポイントのキーを設定
+STRIPE_WEBHOOK_SECRET = env.get_value('STRIPE_WEBHOOK_SECRET',str)

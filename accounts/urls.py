@@ -22,4 +22,6 @@ urlpatterns = [
     path('billing/success/', views.success, name='success'),
     # 支払い失敗画面
     path('billing/cancel/', views.cancel, name='cancel'),
+    # Webhookエンドポイント
+    path('billing/webhook/api/v1/events', views.webhook_receiver, name='webhook_receiver'),
 ]
