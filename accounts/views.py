@@ -19,6 +19,7 @@ import logging
 # ログの名前空間取得
 logger = logging.getLogger('general')
 
+
 #
 # Home画面表示
 #
@@ -115,18 +116,43 @@ def stripe_config(request):
 @csrf_exempt
 def create_checkout_session(request):
     if request.method == 'GET':
-        domain_url = 'http://localhost:8080/billing/'
+        # ログ出力
+        logger.info("サブスクリプションを実施します")
+
+        # 現在のドメインつきURLを取得する
+        domain_url = "{0}://{1}".format(request.scheme, request.get_host()) + '/billing/'
         stripe.api_key = settings.STRIPE_SECRET_KEY
+
+        # サブスクリプションの形式を識別する
+        if "query" in request.GET:
+            queryParam = request.GET.get("query")
+            if queryParam == settings.SUBSCRIPTION_MONTHLY_LIMITED:
+                stripPriceId = settings.STRIPE_PRICE_ID_MONTHLY_LIMITED
+            elif queryParam == settings.SUBSCRIPTION_YEARLY_LIMITED:
+                stripPriceId = settings.STRIPE_PRICE_ID_YEARLY_LIMITED
+            else:
+                # ログ出力
+                logger.exception("サブスクリプションの形式が不正です")
+                return redirect('/billing/')
+
+        else:
+            # ログ出力
+            logger.exception("サブスクリプションの形式が指定されていません")
+            return redirect('/billing/')
+
         try:
+            # stripeのAPIにアクセスし、支払いを委託する
             checkout_session = stripe.checkout.Session.create(
-                client_reference_id=request.user.id if request.user.is_authenticated else None,
+                # client_reference_id=request.user.id if request.user.is_authenticated else None,
+                client_reference_id=request.user.id,
                 success_url=domain_url + 'success?session_id={CHECKOUT_SESSION_ID}',
                 cancel_url=domain_url + 'cancel/',
                 payment_method_types=['card'],
                 mode='subscription',
                 line_items=[
                     {
-                        'price': settings.STRIPE_PRICE_ID,
+                        # 'price': settings.STRIPE_PRICE_ID,
+                        'price': stripPriceId,
                         'quantity': 1,
                     }
                 ]
@@ -139,6 +165,10 @@ def create_checkout_session(request):
 # 支払いに成功した後の画面
 #
 def success(request):
+    # 支払い成功以外の場合はリダイレクト
+    if not request.GET.get('session_id'):
+        return redirect('/home/')
+    
     print(request.GET.get('session_id'))
     return render(request, 'billing/success.html')
 
